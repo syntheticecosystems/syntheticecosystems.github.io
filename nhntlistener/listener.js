@@ -148,6 +148,9 @@ function displayResponse() {
     // var litems = []
     for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
+        if(i == 0){
+            li.setAttribute("style", "font-weight: bold");
+        }
         li.appendChild(document.createTextNode(responses[i]));
         // li.appendChild(document.createTextNode(responses[responses.length - 1]));
         list.appendChild(li);
