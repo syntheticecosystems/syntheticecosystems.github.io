@@ -108,7 +108,8 @@ captureStart.addEventListener("click", function () {
             if (res && res.length > 0) {
                 res = new TextDecoder("utf-8").decode(res);
                 rxData.value = res;
-                responses.push(rxData.value);
+                responses.unshift(rxData.value);
+                // responses.push(rxData.value);
                 displayResponse();
                 console.log(responses);
             }
@@ -146,7 +147,8 @@ function displayResponse() {
     // var litems = []
     // for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
-        li.appendChild(document.createTextNode(responses[responses.length - 1]));
+        li.appendChild(document.createTextNode(responses[0]));
+        // li.appendChild(document.createTextNode(responses[responses.length - 1]));
         ul.appendChild(li);
     // } 
 }
