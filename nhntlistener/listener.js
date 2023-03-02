@@ -145,14 +145,12 @@ captureStop.click();
 function displayResponse() {
     var list = document.getElementById("list");
     list.innerHTML = '';
-    // var litems = []
     for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
+        li.appendChild(document.createTextNode(responses[i]));
         if(i == 0){
             li.setAttribute("style", "font-weight: bold");
         }
-        li.appendChild(document.createTextNode(responses[i]));
-        // li.appendChild(document.createTextNode(responses[responses.length - 1]));
         list.appendChild(li);
     } 
 }
