@@ -21,6 +21,7 @@ ggwave_factory().then(function(obj) {
 
 var txData = document.getElementById("txData");
 var rxData = document.getElementById("rxData");
+rxData.innerHTML = 'Press the start button to begin listening to the plants!';
 var captureStart = document.getElementById("captureStart");
 var captureStop = document.getElementById("captureStop");
 
