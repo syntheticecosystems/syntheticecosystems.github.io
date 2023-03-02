@@ -109,7 +109,6 @@ captureStart.addEventListener("click", function () {
                 res = new TextDecoder("utf-8").decode(res);
                 rxData.value = res;
                 responses.unshift(rxData.value);
-                // responses.push(rxData.value);
                 displayResponse();
                 console.log(responses);
             }
@@ -121,7 +120,7 @@ captureStart.addEventListener("click", function () {
         console.error(e);
     });
 
-    rxData.value = 'listening ...';
+    rxData.innerHTML = 'listening ...';
     captureStart.hidden = true;
     captureStop.hidden = false;
 });
@@ -133,8 +132,7 @@ captureStop.addEventListener("click", function () {
         recorder = null;
     }
 
-    rxData.value = 'Not listening! Press start to begin listening.';
-    // rxData.value = 'Audio capture is paused! Press the "Start capturing" button to analyze audio from the microphone';
+    rxData.innerHTML = 'Press the start button to begin listening to the plants!';
     captureStart.hidden = false;
     captureStop.hidden = true;
 });
