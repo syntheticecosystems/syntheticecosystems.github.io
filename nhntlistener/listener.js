@@ -147,9 +147,9 @@ function displayResponse() {
     // var litems = []
     // for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
-        li.appendChild(document.createTextNode(responses[0]));
+        li.prepend(document.createTextNode(responses[0]));
         // li.appendChild(document.createTextNode(responses[responses.length - 1]));
-        ol.appendChild(li);
+        ol.prepend(li);
     // } 
 }
 
