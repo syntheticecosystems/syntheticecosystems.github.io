@@ -143,14 +143,15 @@ captureStop.click();
 
 
 function displayResponse() {
-    var ol = document.getElementById("list");
+    var list = document.getElementById("list");
+    list.innerHTML = '';
     // var litems = []
-    // for(let i = 0; i < responses.length; i++){
+    for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
-        li.prepend(document.createTextNode(responses[0]));
+        li.appendChild(document.createTextNode(responses[i]));
         // li.appendChild(document.createTextNode(responses[responses.length - 1]));
-        ol.prepend(li);
-    // } 
+        list.appendChild(li);
+    } 
 }
 
 
