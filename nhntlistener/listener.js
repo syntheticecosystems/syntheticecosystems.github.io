@@ -12,6 +12,7 @@ var parameters = null;
 var instance = null;
 
 var responses = [];
+var messageParts = [];
 
 // instantiate the ggwave instance
 // ggwave_factory comes from the ggwave.js module
@@ -103,7 +104,6 @@ captureStart.addEventListener("click", function () {
         }
 
 
-        var messageParts = []
         
         recorder.onaudioprocess = function (e) {
             var source = e.inputBuffer;
@@ -111,23 +111,35 @@ captureStart.addEventListener("click", function () {
 
             if (res && res.length > 0) {
                 res = new TextDecoder("utf-8").decode(res);
-                
+               
+                // ----------------------------------------------
+                // this decodes multipart messages
                 const re = /\d/g;
                 header = res.match(re)
                 console.log(header)
 
-                if(header[1] < header[2]){
-                    console.log("in here")
-                    messageParts.append(res);
-                }else if(header[1] == header[2]){
-                    var message = "";
-                    for(var i = 0; i < messageParts.length; i++){
-                        message = message + messageParts[i];
-                        console.log(message)
+                if(header == null){
+                    responses.unshift(res);
+                }else if(header != null){
+                    messageParts.push(res);
+                    if(header[1] < header[2]){
+                        console.log("waiting for message parts")
+                        console.log(messageParts)
+                    }else if(header[1] == header[2]){
+                        console.log("got message parts")
+                        var message = "";
+                        for(var i = 0; i < messageParts.length; i++){
+                            const headerStrip = /\d:\d\/\d:/;
+                            var part = messageParts[i].replace(headerStrip, '');
+                            message = message + " " + part;
+                            console.log(message)
+                        }
+                        responses.unshift(message);
+                        messageParts = []
                     }
-                    responses.unshift(message);
-                    messageParts = []
                 }
+
+                // ----------------------------------------------
 
                 displayResponse();
                 console.log(responses);
@@ -165,20 +177,18 @@ function displayResponse() {
     list.innerHTML = '';
     for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
-        li.appendChild(document.createTextNode(responses[i]));
+        
         if(i == 0){
-            li.setAttribute("style", "font-weight: bold");
+            li.className = "firstUL";
+        }else if(i % 2 == 0 && i != 0){
+            li.className = "leftUL";
+        }else{
+            li.className = "rightUL";
         }
+
+        li.appendChild(document.createTextNode(responses[i]));
         list.appendChild(li);
     } 
 }
-
-function parseResponse(){
-    const re = /\d/g;
-
-
-
-}
-
 
 }
