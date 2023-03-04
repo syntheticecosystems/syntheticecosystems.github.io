@@ -120,6 +120,7 @@ captureStart.addEventListener("click", function () {
 
                 if(header == null){
                     responses.unshift(res);
+                    leftRight = !leftRight; 
                 }else if(header != null){
                     messageParts.push(res);
                     if(header[1] < header[2]){
@@ -135,6 +136,7 @@ captureStart.addEventListener("click", function () {
                             console.log(message)
                         }
                         responses.unshift(message);
+                        leftRight = !leftRight; 
                         messageParts = []
                     }
                 }
@@ -200,7 +202,6 @@ function displayResponse() {
         li.appendChild(document.createTextNode(responses[i]));
         list.appendChild(li);
     }
-    leftRight = !leftRight; 
 }
 
 }
