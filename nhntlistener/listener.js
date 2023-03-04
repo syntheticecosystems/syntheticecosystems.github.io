@@ -112,8 +112,10 @@ captureStart.addEventListener("click", function () {
                 var messageParts = []
                 const re = /\d/g;
                 header = res.match(re)
+                console.log(header)
 
                 if(header[1] < header[2]){
+                    console.log("in here")
                     messageParts.append(res);
                 }else if(header[1] == header[2]){
                     var message = "";
