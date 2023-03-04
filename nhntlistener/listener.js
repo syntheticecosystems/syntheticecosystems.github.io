@@ -108,8 +108,22 @@ captureStart.addEventListener("click", function () {
 
             if (res && res.length > 0) {
                 res = new TextDecoder("utf-8").decode(res);
-                rxData.value = res;
-                responses.unshift(rxData.value);
+                
+                var messageParts = []
+                const re = /\d/g;
+                header = res.match(re)
+
+                if(header[1] < header[2]){
+                    messageParts.append(res);
+                }else if(header[1] == header[2]){
+                    var message = "";
+                    for(var i = 0; i < messageParts.length; i++){
+                        message = message + messageParts[i];
+                        console.log(message)
+                    }
+                    responses.unshift(message);
+                }
+
                 displayResponse();
                 console.log(responses);
             }
@@ -152,6 +166,13 @@ function displayResponse() {
         }
         list.appendChild(li);
     } 
+}
+
+function parseResponse(){
+    const re = /\d/g;
+
+
+
 }
 
 
