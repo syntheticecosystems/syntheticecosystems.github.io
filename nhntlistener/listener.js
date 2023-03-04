@@ -171,24 +171,36 @@ captureStop.addEventListener("click", function () {
 
 captureStop.click();
 
+var leftRight = true;
 
 function displayResponse() {
     var list = document.getElementById("list");
     list.innerHTML = '';
     for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
-        
-        if(i == 0){
-            li.className = "firstUL";
-        }else if(i % 2 == 0 && i != 0){
-            li.className = "leftUL";
+      
+        // this keeps the messages on the same side, but switehd the side of the new message...complicated but simple
+        if(i % 2 == 0){
+            if(leftRight){
+                li.className = "leftUL";
+            }else{
+                li.className = "rightUL";
+            }
         }else{
-            li.className = "rightUL";
+            if(leftRight){
+                li.className = "rightUL";
+            }else{
+                li.className = "leftUL";
+            }
+        }
+        if(i == 0){
+            li.setAttribute("style", "font-weight: bold");
         }
 
         li.appendChild(document.createTextNode(responses[i]));
         list.appendChild(li);
-    } 
+    }
+    leftRight = !leftRight; 
 }
 
 }
