@@ -102,6 +102,9 @@ captureStart.addEventListener("click", function () {
                     numberOfOutputChannels);
         }
 
+
+        var messageParts = []
+        
         recorder.onaudioprocess = function (e) {
             var source = e.inputBuffer;
             var res = ggwave.decode(instance, convertTypedArray(new Float32Array(source.getChannelData(0)), Int8Array));
@@ -109,7 +112,6 @@ captureStart.addEventListener("click", function () {
             if (res && res.length > 0) {
                 res = new TextDecoder("utf-8").decode(res);
                 
-                var messageParts = []
                 const re = /\d/g;
                 header = res.match(re)
                 console.log(header)
@@ -124,6 +126,7 @@ captureStart.addEventListener("click", function () {
                         console.log(message)
                     }
                     responses.unshift(message);
+                    messageParts = []
                 }
 
                 displayResponse();
