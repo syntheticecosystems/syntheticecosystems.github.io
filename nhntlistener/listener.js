@@ -114,23 +114,24 @@ captureStart.addEventListener("click", function () {
                
                 // ----------------------------------------------
                 // this decodes multipart messages
-                const re = /\d/g;
+                const re = /(\d+):(\d):(\d)\/(\d):/;
                 header = res.match(re)
                 console.log(header)
 
                 if(header == null){
                     responses.unshift(res);
-                    leftRight = !leftRight; 
+                    leftRight = !leftRight;
                 }else if(header != null){
+
                     messageParts.push(res);
-                    if(header[1] < header[2]){
+                    if(header[3] < header[4]){
                         console.log("waiting for message parts")
                         console.log(messageParts)
-                    }else if(header[1] == header[2]){
+                    }else if(header[3] == header[4]){
                         console.log("got message parts")
                         var message = "";
                         for(var i = 0; i < messageParts.length; i++){
-                            const headerStrip = /\d:\d\/\d:/;
+                            const headerStrip = /(\d+):(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
                             message = message + " " + part;
                             console.log(message)
