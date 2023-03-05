@@ -125,10 +125,10 @@ captureStart.addEventListener("click", function () {
                 }else if(header != null){
 
                     messageParts.push(res);
-                    if(header[1] < header[2]){
+                    if(header[2] < header[3]){
                         console.log("waiting for message parts")
                         console.log(messageParts)
-                    }else if(header[1] == header[2]){
+                    }else if(header[2] == header[3]){
                         console.log("got message parts")
                         var message = "";
                         for(var i = 0; i < messageParts.length; i++){
