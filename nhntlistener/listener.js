@@ -114,7 +114,8 @@ captureStart.addEventListener("click", function () {
                
                 // ----------------------------------------------
                 // this decodes multipart messages
-                const re = /(\d+):(\d):(\d)\/(\d):/;
+                // const re = /(\d+):(\d):(\d)\/(\d):/;
+                const re = /(\d):(\d)\/(\d):/;
                 header = res.match(re)
                 console.log(header)
 
@@ -124,14 +125,15 @@ captureStart.addEventListener("click", function () {
                 }else if(header != null){
 
                     messageParts.push(res);
-                    if(header[3] < header[4]){
+                    if(header[1] < header[2]){
                         console.log("waiting for message parts")
                         console.log(messageParts)
-                    }else if(header[3] == header[4]){
+                    }else if(header[1] == header[2]){
                         console.log("got message parts")
                         var message = "";
                         for(var i = 0; i < messageParts.length; i++){
-                            const headerStrip = /(\d+):(\d):(\d)\/(\d):/g;
+                            // const headerStrip = /(\d+):(\d):(\d)\/(\d):/g;
+                            const headerStrip = /(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
                             message = message + " " + part;
                             console.log(message)
