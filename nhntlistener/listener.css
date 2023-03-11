@@ -23,7 +23,7 @@ body{
 }
 
 .header{
-  padding: 5em 1em 2em 1em;
+  padding: 5em 1em 0.1em 1em;
   color: #ffffff;
   background-image: url('assets/darkplants.jpg');
   background-repeat: repeat;
@@ -69,7 +69,8 @@ body{
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin-top: 1em;
+  margin: 1em 0 0 6em;
+  /* text-align: center; */
 }
 
 .btn:hover {
