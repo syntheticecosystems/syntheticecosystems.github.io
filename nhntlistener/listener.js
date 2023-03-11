@@ -22,7 +22,7 @@ ggwave_factory().then(function(obj) {
 
 var txData = document.getElementById("txData");
 var rxData = document.getElementById("rxData");
-rxData.innerHTML = 'Press the start button to begin listening to the plants!';
+rxData.innerHTML = 'Press the start button and hold the phone next to the plants.';
 var captureStart = document.getElementById("captureStart");
 var captureStop = document.getElementById("captureStop");
 
@@ -104,14 +104,14 @@ captureStart.addEventListener("click", function () {
         }
 
 
-        
+
         recorder.onaudioprocess = function (e) {
             var source = e.inputBuffer;
             var res = ggwave.decode(instance, convertTypedArray(new Float32Array(source.getChannelData(0)), Int8Array));
 
             if (res && res.length > 0) {
                 res = new TextDecoder("utf-8").decode(res);
-               
+
                 // ----------------------------------------------
                 // this decodes multipart messages
                 // const re = /(\d+):(\d):(\d)\/(\d):/;
@@ -139,7 +139,7 @@ captureStart.addEventListener("click", function () {
                             console.log(message)
                         }
                         responses.unshift(message);
-                        leftRight = !leftRight; 
+                        leftRight = !leftRight;
                         messageParts = []
                     }
                 }
@@ -157,7 +157,7 @@ captureStart.addEventListener("click", function () {
         console.error(e);
     });
 
-    rxData.innerHTML = 'listening ...';
+    rxData.innerHTML = 'Microphone active...';
     captureStart.hidden = true;
     captureStop.hidden = false;
 });
@@ -169,7 +169,7 @@ captureStop.addEventListener("click", function () {
         recorder = null;
     }
 
-    rxData.innerHTML = 'Press the start button to begin listening to the plants!';
+    rxData.innerHTML = 'Press the start button and hold the phone next to the plants.';
     captureStart.hidden = false;
     captureStop.hidden = true;
 });
@@ -183,7 +183,7 @@ function displayResponse() {
     list.innerHTML = '';
     for(let i = 0; i < responses.length; i++){
         var li = document.createElement("li");
-      
+
         // this keeps the messages on the same side, but switehd the side of the new message...complicated but simple
         if(i % 2 == 0){
             if(leftRight){
