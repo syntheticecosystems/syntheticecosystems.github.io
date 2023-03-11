@@ -23,24 +23,24 @@ body{
 }
 
 .header{
-  padding: 5em 5em 2em 5em;
+  padding: 5em 1em 2em 1em;
   color: #ffffff;
   background-image: url('assets/darkplants.jpg');
   background-repeat: repeat;
   font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
-  font-size: 1em;
+  font-size: 0.8em;
   background-size: auto 100%;
 }
 
 .midsection{
-  margin: 2em 5em 2em 5em;
+  margin: 2em 1em 2em 1em;
   font-size:1.2em;
   background-color: #000;
-  font-size:1.2em;
+  font-size:1em;
   line-height: 1.6;
 
   color: #fff;
-  padding-bottom: 4em;
+  padding-bottom: 2em;
   border-bottom: 2px solid #fff;
 }
 
@@ -54,13 +54,13 @@ body{
   cursor: pointer;
   /* display: inline-flex; */
   flex: 1 1 auto;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
   justify-content: center;
   line-height: 1;
   margin: 0;
   outline: none;
-  padding: 1rem 1.2rem;
+  padding: 0.8rem 0.7rem;
   text-align: center;
   text-decoration: none;
   transition: box-shadow .2s,-webkit-box-shadow .2s;
@@ -77,10 +77,15 @@ body{
 }
 
 #container-fluid{
-  margin: 2em 5em 2em 5em;
+  margin: 2em 1em 2em 1em;
   background-color: #000;
-  overflow: auto;
+  /* overflow: auto; */
   flex-grow: 1;
-  font-size:1.2em;
+  font-size:1em;
   line-height: 1.6;
+}
+
+
+.container{
+  overflow: auto;
 }
