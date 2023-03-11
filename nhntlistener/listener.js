@@ -132,12 +132,31 @@ captureStart.addEventListener("click", function () {
                         console.log("got message parts")
                         var message = "";
                         for(var i = 0; i < messageParts.length; i++){
-                            // const headerStrip = /(\d+):(\d):(\d)\/(\d):/g;
                             const headerStrip = /(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
+
+                            // NAME REPLACEMENT
+                            // HARPREET: here's some quick example code for the name replacement. not tested.
+                            //
+                            // plantName = ""
+                            // switch(header[1]){
+                            //  case 1:
+                            //      plantName = "dandelion"
+                            //      break;
+                            //  case 2:
+                            //      plantName = "ficus"
+                            //      break;  
+                            //  default:
+                            //      plantName = "unknown";     
+                            //}
+
                             message = message + " " + part;
                             console.log(message)
                         }
+
+                        // NAME REPLACEMENT
+                        // message = plantName + ": " + message
+
                         responses.unshift(message);
                         leftRight = !leftRight;
                         messageParts = []
