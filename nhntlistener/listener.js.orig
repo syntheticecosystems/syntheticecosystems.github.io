@@ -136,9 +136,9 @@ captureStart.addEventListener("click", function () {
                         var message = "";
                         for(var i = 0; i < messageParts.length; i++){
                             const headerStrip = /(\d):(\d)\/(\d):/g;
-
+<<<<<<< HEAD
                             var part = messageParts[i].replace(headerStrip, ''); //
-
+=======
                             var part = messageParts[i].replace(headerStrip, '');
 
                             // NAME REPLACEMENT
@@ -151,12 +151,12 @@ captureStart.addEventListener("click", function () {
                             //      break;
                             //  case 2:
                             //      plantName = "ficus"
-                            //      break;
+                            //      break;  
                             //  default:
-                            //      plantName = "unknown";
+                            //      plantName = "unknown";     
                             //}
 
-
+>>>>>>> 41cbda4dd3221d8bd27b8e89162e8b3c9615aa3a
                             message = message + " " + part;
                             console.log(message)
                         }
