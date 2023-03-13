@@ -115,6 +115,7 @@ captureStart.addEventListener("click", function () {
                 // ----------------------------------------------
                 // this decodes multipart messages
                 // const re = /(\d+):(\d):(\d)\/(\d):/;
+                //first field is the plant that is being sent to
                 const re = /(\d):(\d)\/(\d):/;
                 header = res.match(re)
                 console.log(header)
@@ -126,15 +127,17 @@ captureStart.addEventListener("click", function () {
 
                     messageParts.push(res);
                     if(header[2] < header[3]){
-                        console.log("waiting for message parts")
-                        console.log(messageParts)
+                        console.log("waiting for message parts");
+                        //responses.unshift(message); HERE you can add ...
+                        //header[1] is the numebr of the plant that is receiving the message
+                        console.log(messageParts);
                     }else if(header[2] == header[3]){
                         console.log("got message parts")
                         var message = "";
                         for(var i = 0; i < messageParts.length; i++){
                             // const headerStrip = /(\d+):(\d):(\d)\/(\d):/g;
                             const headerStrip = /(\d):(\d)\/(\d):/g;
-                            var part = messageParts[i].replace(headerStrip, '');
+                            var part = messageParts[i].replace(headerStrip, ''); //
                             message = message + " " + part;
                             console.log(message)
                         }
