@@ -14,6 +14,9 @@ var instance = null;
 var responses = [];
 var messageParts = [];
 
+// plant names from SE1 -> SE5
+var plantNames = ["Ming Aralia", "Pin-Stripe Calathea", "Inch Plant"]
+
 // instantiate the ggwave instance
 // ggwave_factory comes from the ggwave.js module
 ggwave_factory().then(function(obj) {
@@ -125,37 +128,85 @@ captureStart.addEventListener("click", function () {
                 }else if(header != null){
 
                     messageParts.push(res);
+
                     if(header[2] < header[3]){
                         console.log("waiting for message parts")
                         console.log(messageParts)
+
+                        if(header[2] == 1){
+                            plantName = ""
+                            recipient = parseInt(header[1], 10)
+                            switch(recipient){
+                             case 1:
+                                 plantName = plantNames[0]
+                                 break;
+                             case 2:
+                                 plantName = plantNames[1]
+                                 break; 
+                             case 3:
+                                 plantName = plantNames[2]
+                                 break;
+                             case 4:
+                                 plantName = plantNames[3]
+                                 break;
+                             case 5:
+                                 plantName = plantNames[4]
+                                 break;  
+                             default:
+                                 plantName = "unknown";     
+                            }
+                            console.log("dot dot dot?")
+                            responses.unshift(plantName + " talking. . .");
+                        }
+
                     }else if(header[2] == header[3]){
                         console.log("got message parts")
                         var message = "";
+                        
+                        if(header[3] > 1){
+                            console.log("responses: ")
+                            console.log(responses)
+                            console.log("removing entry")
+                            responses.shift()
+                        }
+                        
                         for(var i = 0; i < messageParts.length; i++){
+
+
+
                             const headerStrip = /(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
-
-                            // NAME REPLACEMENT
-                            // HARPREET: here's some quick example code for the name replacement. not tested.
-                            //
-                            // plantName = ""
-                            // switch(header[1]){
-                            //  case 1:
-                            //      plantName = "dandelion"
-                            //      break;
-                            //  case 2:
-                            //      plantName = "ficus"
-                            //      break;  
-                            //  default:
-                            //      plantName = "unknown";     
-                            //}
+                            console.log("header")
+                            console.log(header[1])
+                            
+                            plantName = ""
+                            recipient = parseInt(header[1], 10)
+                            switch(recipient){
+                             case 1:
+                                 plantName = plantNames[0]
+                                 break;
+                             case 2:
+                                 plantName = plantNames[1]
+                                 break; 
+                             case 3:
+                                 plantName = plantNames[2]
+                                 break;
+                             case 4:
+                                 plantName = plantNames[3]
+                                 break;
+                             case 5:
+                                 plantName = plantNames[4]
+                                 break;  
+                             default:
+                                 plantName = "unknown";     
+                            }
 
                             message = message + " " + part;
                             console.log(message)
                         }
 
                         // NAME REPLACEMENT
-                        // message = plantName + ": " + message
+                        message = plantName + ": " + message
 
                         responses.unshift(message);
                         leftRight = !leftRight;
