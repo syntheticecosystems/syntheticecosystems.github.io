@@ -1,0 +1,236 @@
+window.onload = function(){
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+
+var context = null;
+var recorder = null;
+
+// the ggwave module instance
+var ggwave = null;
+var parameters = null;
+var instance = null;
+
+var responses = [];
+var messageParts = [];
+
+// instantiate the ggwave instance
+// ggwave_factory comes from the ggwave.js module
+ggwave_factory().then(function(obj) {
+    ggwave = obj;
+});
+
+var txData = document.getElementById("txData");
+var rxData = document.getElementById("rxData");
+rxData.innerHTML = 'Press the start button and hold the phone next to the plants.';
+var captureStart = document.getElementById("captureStart");
+var captureStop = document.getElementById("captureStop");
+
+// helper function
+function convertTypedArray(src, type) {
+    var buffer = new ArrayBuffer(src.byteLength);
+    var baseView = new src.constructor(buffer).set(src);
+    return new type(buffer);
+}
+
+// initialize audio context and ggwave
+function init() {
+    if (!context) {
+        context = new AudioContext({sampleRate: 48000});
+
+        parameters = ggwave.getDefaultParameters();
+        parameters.sampleRateInp = context.sampleRate;
+        parameters.sampleRateOut = context.sampleRate;
+        instance = ggwave.init(parameters);
+    }
+}
+
+//
+// Tx
+//
+
+function onSend() {
+    init();
+
+    // pause audio capture during transmission
+    captureStop.click();
+
+    // generate audio waveform
+    var waveform = ggwave.encode(instance, txData.value, ggwave.ProtocolId.GGWAVE_PROTOCOL_AUDIBLE_FAST, 10)
+
+    // play audio
+    var buf = convertTypedArray(waveform, Float32Array);
+    var buffer = context.createBuffer(1, buf.length, context.sampleRate);
+    buffer.getChannelData(0).set(buf);
+    var source = context.createBufferSource();
+    source.buffer = buffer;
+    source.connect(context.destination);
+    source.start(0);
+}
+
+//
+// Rx
+//
+
+captureStart.addEventListener("click", function () {
+    init();
+
+    let constraints = {
+        audio: {
+            // not sure if these are necessary to have
+            echoCancellation: false,
+            autoGainControl: false,
+            noiseSuppression: false
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints).then(function (e) {
+        mediaStream = context.createMediaStreamSource(e);
+
+        var bufferSize = 1024;
+        var numberOfInputChannels = 1;
+        var numberOfOutputChannels = 1;
+
+        if (context.createScriptProcessor) {
+            recorder = context.createScriptProcessor(
+                    bufferSize,
+                    numberOfInputChannels,
+                    numberOfOutputChannels);
+        } else {
+            recorder = context.createJavaScriptNode(
+                    bufferSize,
+                    numberOfInputChannels,
+                    numberOfOutputChannels);
+        }
+
+
+
+        recorder.onaudioprocess = function (e) {
+            var source = e.inputBuffer;
+            var res = ggwave.decode(instance, convertTypedArray(new Float32Array(source.getChannelData(0)), Int8Array));
+
+            if (res && res.length > 0) {
+                res = new TextDecoder("utf-8").decode(res);
+
+                // ----------------------------------------------
+                // this decodes multipart messages
+                // const re = /(\d+):(\d):(\d)\/(\d):/;
+                //first field is the plant that is being sent to
+                const re = /(\d):(\d)\/(\d):/;
+                header = res.match(re)
+                console.log(header)
+
+                if(header == null){
+                    responses.unshift(res);
+                    leftRight = !leftRight;
+                }else if(header != null){
+
+                    messageParts.push(res);
+                    if(header[2] < header[3]){
+                        console.log("waiting for message parts");
+                        //responses.unshift(message); HERE you can add ...
+                        //header[1] is the numebr of the plant that is receiving the message
+                        console.log(messageParts);
+                    }else if(header[2] == header[3]){
+                        console.log("got message parts")
+                        var message = "";
+                        for(var i = 0; i < messageParts.length; i++){
+                            const headerStrip = /(\d):(\d)\/(\d):/g;
+<<<<<<< HEAD
+                            var part = messageParts[i].replace(headerStrip, ''); //
+=======
+                            var part = messageParts[i].replace(headerStrip, '');
+
+                            // NAME REPLACEMENT
+                            // HARPREET: here's some quick example code for the name replacement. not tested.
+                            //
+                            // plantName = ""
+                            // switch(header[1]){
+                            //  case 1:
+                            //      plantName = "dandelion"
+                            //      break;
+                            //  case 2:
+                            //      plantName = "ficus"
+                            //      break;  
+                            //  default:
+                            //      plantName = "unknown";     
+                            //}
+
+>>>>>>> 41cbda4dd3221d8bd27b8e89162e8b3c9615aa3a
+                            message = message + " " + part;
+                            console.log(message)
+                        }
+
+                        // NAME REPLACEMENT
+                        // message = plantName + ": " + message
+
+                        responses.unshift(message);
+                        leftRight = !leftRight;
+                        messageParts = []
+                    }
+                }
+
+                // ----------------------------------------------
+
+                displayResponse();
+                console.log(responses);
+            }
+        }
+
+        mediaStream.connect(recorder);
+        recorder.connect(context.destination);
+    }).catch(function (e) {
+        console.error(e);
+    });
+
+    rxData.innerHTML = 'Microphone active...';
+    captureStart.hidden = true;
+    captureStop.hidden = false;
+});
+
+captureStop.addEventListener("click", function () {
+    if (recorder) {
+        recorder.disconnect(context.destination);
+        mediaStream.disconnect(recorder);
+        recorder = null;
+    }
+
+    rxData.innerHTML = 'Press the start button and hold the phone next to the plants.';
+    captureStart.hidden = false;
+    captureStop.hidden = true;
+});
+
+captureStop.click();
+
+var leftRight = true;
+
+function displayResponse() {
+    var list = document.getElementById("list");
+    list.innerHTML = '';
+    for(let i = 0; i < responses.length; i++){
+        var li = document.createElement("li");
+
+        // this keeps the messages on the same side, but switehd the side of the new message...complicated but simple
+        if(i % 2 == 0){
+            if(leftRight){
+                li.className = "leftUL";
+            }else{
+                li.className = "rightUL";
+            }
+        }else{
+            if(leftRight){
+                li.className = "rightUL";
+            }else{
+                li.className = "leftUL";
+            }
+        }
+        if(i == 0){
+            li.setAttribute("style", "font-weight: bold");
+        }
+
+        li.appendChild(document.createTextNode(responses[i]));
+        list.appendChild(li);
+    }
+}
+
+}
