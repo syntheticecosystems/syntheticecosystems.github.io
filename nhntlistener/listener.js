@@ -15,7 +15,7 @@ var responses = [];
 var messageParts = [];
 
 // plant names from SE1 -> SE5
-var plantNames = ["Ming Aralia", "Pin-Stripe Calathea", "Inch Plant"]
+var plantNames = ["Pin-Stripe Calathea", "California Black Rose" "Dracaena Sunray Cane", "Inch Plant", "California Ming Aralia"]
 
 // instantiate the ggwave instance
 // ggwave_factory comes from the ggwave.js module
@@ -171,8 +171,6 @@ captureStart.addEventListener("click", function () {
                         }
                         
                         for(var i = 0; i < messageParts.length; i++){
-
-
 
                             const headerStrip = /(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
