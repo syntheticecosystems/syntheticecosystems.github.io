@@ -15,7 +15,7 @@ var responses = [];
 var messageParts = [];
 
 // plant names from SE1 -> SE5
-var plantNames = ["Pin-Stripe Calathea", "California Black Rose" "Dracaena Sunray Cane", "Inch Plant", "California Ming Aralia"]
+var plantNames = ["Pin-Stripe Calathea", "California Black Rose", "Dracaena Sunray Cane", "Inch Plant", "California Ming Aralia"]
 
 // instantiate the ggwave instance
 // ggwave_factory comes from the ggwave.js module
