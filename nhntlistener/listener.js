@@ -13,6 +13,7 @@ var instance = null;
 
 var responses = [];
 var messageParts = [];
+var plantName = ""
 
 // plant names from SE1 -> SE5
 var plantNames = ["Pin-Stripe Calathea", "California Black Rose", "Dracaena Sunray Cane", "Inch Plant", "California Ming Aralia"]
@@ -125,6 +126,7 @@ captureStart.addEventListener("click", function () {
                 if(header == null){
                     responses.unshift(res);
                     leftRight = !leftRight;
+
                 }else if(header != null){
 
                     messageParts.push(res);
@@ -134,33 +136,14 @@ captureStart.addEventListener("click", function () {
                         console.log(messageParts)
 
                         if(header[2] == 1){
-                            plantName = ""
                             recipient = parseInt(header[1], 10)
-                            switch(recipient){
-                             case 1:
-                                 plantName = plantNames[0]
-                                 break;
-                             case 2:
-                                 plantName = plantNames[1]
-                                 break; 
-                             case 3:
-                                 plantName = plantNames[2]
-                                 break;
-                             case 4:
-                                 plantName = plantNames[3]
-                                 break;
-                             case 5:
-                                 plantName = plantNames[4]
-                                 break;  
-                             default:
-                                 plantName = "unknown";     
-                            }
+                            plantName = getPlantName(recipient)
                             console.log("dot dot dot?")
                             responses.unshift(plantName + " talking. . .");
                         }
 
                     }else if(header[2] == header[3]){
-                        console.log("got message parts")
+                        console.log("got all message parts")
                         var message = "";
                         
                         if(header[3] > 1){
@@ -172,39 +155,17 @@ captureStart.addEventListener("click", function () {
                         }
                         
                         for(var i = 0; i < messageParts.length; i++){
-
                             const headerStrip = /(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
-                            console.log("header")
-                            console.log(header[1])
-                            
-                            plantName = ""
-                            recipient = parseInt(header[1], 10)
-                            switch(recipient){
-                             case 1:
-                                 plantName = plantNames[0]
-                                 break;
-                             case 2:
-                                 plantName = plantNames[1]
-                                 break; 
-                             case 3:
-                                 plantName = plantNames[2]
-                                 break;
-                             case 4:
-                                 plantName = plantNames[3]
-                                 break;
-                             case 5:
-                                 plantName = plantNames[4]
-                                 break;  
-                             default:
-                                 plantName = "unknown";     
-                            }
 
                             message = message + " " + part;
                             console.log(message)
                         }
 
                         // NAME REPLACEMENT
+                        if(plantName == ""){
+                            plantName = getPlantName(parseInt(header[1]));
+                        }
                         message = plantName + ": " + message
 
                         responses.unshift(message);
@@ -246,6 +207,31 @@ captureStop.addEventListener("click", function () {
 captureStop.click();
 
 var leftRight = true;
+
+function getPlantName(number){
+    plantName = ""
+    switch(number){
+     case 1:
+         plantName = plantNames[0];
+         break;
+     case 2:
+         plantName = plantNames[1];
+         break; 
+     case 3:
+         plantName = plantNames[2];
+         break;
+     case 4:
+         plantName = plantNames[3];
+         break;
+     case 5:
+         plantName = plantNames[4];
+         break;  
+     default:
+         plantName = "unknown";     
+    }
+
+    return plantName;
+}
 
 function displayResponse() {
     var list = document.getElementById("list");
