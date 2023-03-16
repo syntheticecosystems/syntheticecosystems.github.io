@@ -142,7 +142,7 @@ captureStart.addEventListener("click", function () {
                                  break;
                              case 2:
                                  plantName = plantNames[1]
-                                 break; 
+                                 break;
                              case 3:
                                  plantName = plantNames[2]
                                  break;
@@ -151,9 +151,9 @@ captureStart.addEventListener("click", function () {
                                  break;
                              case 5:
                                  plantName = plantNames[4]
-                                 break;  
+                                 break;
                              default:
-                                 plantName = "unknown";     
+                                 plantName = "unknown";
                             }
                             console.log("dot dot dot?")
                             responses.unshift(plantName + " talking. . .");
@@ -162,7 +162,7 @@ captureStart.addEventListener("click", function () {
                     }else if(header[2] == header[3]){
                         console.log("got message parts")
                         var message = "";
-                        
+
                         if(header[3] > 1){
                             console.log("responses: ")
                             console.log(responses)
@@ -170,14 +170,14 @@ captureStart.addEventListener("click", function () {
                             responses.shift()
                             leftRight = !leftRight
                         }
-                        
+
                         for(var i = 0; i < messageParts.length; i++){
 
                             const headerStrip = /(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
                             console.log("header")
                             console.log(header[1])
-                            
+
                             plantName = ""
                             recipient = parseInt(header[1], 10)
                             switch(recipient){
@@ -186,7 +186,7 @@ captureStart.addEventListener("click", function () {
                                  break;
                              case 2:
                                  plantName = plantNames[1]
-                                 break; 
+                                 break;
                              case 3:
                                  plantName = plantNames[2]
                                  break;
@@ -195,9 +195,9 @@ captureStart.addEventListener("click", function () {
                                  break;
                              case 5:
                                  plantName = plantNames[4]
-                                 break;  
+                                 break;
                              default:
-                                 plantName = "unknown";     
+                                 plantName = "unknown";
                             }
 
                             message = message + " " + part;
@@ -226,7 +226,7 @@ captureStart.addEventListener("click", function () {
         console.error(e);
     });
 
-    rxData.innerHTML = 'Microphone active...';
+    rxData.innerHTML = '-- Microphone active -- ';
     captureStart.hidden = true;
     captureStop.hidden = false;
 });
