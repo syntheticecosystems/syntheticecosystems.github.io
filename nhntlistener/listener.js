@@ -1,5 +1,3 @@
-// this is q test
-
 window.onload = function(){
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -16,6 +14,8 @@ var instance = null;
 var responses = [];
 var messageParts = [];
 var plantName = ""
+
+var nameFlag = false;
 
 // plant names from SE1 -> SE5
 var plantNames = ["Pin-Stripe Calathea", "California Black Rose", "Dracaena Sunray Cane", "Inch Plant", "California Ming Aralia"]
@@ -134,26 +134,31 @@ captureStart.addEventListener("click", function () {
                     messageParts.push(res);
 
                     if(header[2] < header[3]){
-                        console.log("waiting for message parts")
-                        console.log(messageParts)
+                        console.log("waiting for message parts");
+                        console.log(messageParts);
 
                         if(header[2] == 1){
-                            recipient = parseInt(header[1], 10)
-                            plantName = getPlantName(recipient)
-                            console.log("dot dot dot?")
-                            responses.unshift(plantName + " talking. . .");
+                            if(nameFlag == true){
+                                recipient = parseInt(header[1], 10);
+                                plantName = getPlantName(recipient);
+                                console.log("dot dot dot?");
+                                responses.unshift(plantName + " talking. . .");
+                            }else{
+                                responses.unshift("incoming message. . .");
+                            }
+
                         }
 
                     }else if(header[2] == header[3]){
-                        console.log("got all message parts")
+                        console.log("got all message parts");
                         var message = "";
 
                         if(header[3] > 1){
-                            console.log("responses: ")
-                            console.log(responses)
-                            console.log("removing entry")
-                            responses.shift()
-                            leftRight = !leftRight
+                            console.log("responses: ");
+                            console.log(responses);
+                            console.log("removing entry");
+                            responses.shift();
+                            leftRight = !leftRight;
                         }
 
                         for(var i = 0; i < messageParts.length; i++){
@@ -161,18 +166,19 @@ captureStart.addEventListener("click", function () {
                             var part = messageParts[i].replace(headerStrip, '');
 
                             message = message + " " + part;
-                            console.log(message)
+                            console.log(message);
                         }
 
-                        // NAME REPLACEMENT
-                        if(plantName == ""){
-                            plantName = getPlantName(parseInt(header[1]));
+                        if(nameFlag){
+                            if(plantName == ""){
+                                plantName = getPlantName(parseInt(header[1]));
+                            }
+                            message = plantName + ": " + message;
                         }
-                        message = plantName + ": " + message
 
                         responses.unshift(message);
                         leftRight = !leftRight;
-                        messageParts = []
+                        messageParts = [];
                     }
                 }
 
