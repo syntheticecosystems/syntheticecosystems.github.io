@@ -15,7 +15,7 @@ var responses = [];
 var messageParts = [];
 var plantName = ""
 
-var nameFlag = false;
+var nameFlag = true;
 
 // plant names from SE1 -> SE5
 var plantNames = ["Pin-Stripe Calathea", "California Black Rose", "Dracaena Sunray Cane", "Inch Plant", "California Ming Aralia"]
