@@ -146,12 +146,14 @@ captureStart.addEventListener("click", function () {
                             }else{
                                 responses.unshift("incoming message. . .");
                             }
-
+                            leftRight = !leftRight;
                         }
 
                     }else if(header[2] == header[3]){
                         console.log("got all message parts");
                         var message = "";
+
+                        console.log("length: " + responses.length)
 
                         if(header[3] > 1){
                             console.log("responses: ");
@@ -161,10 +163,11 @@ captureStart.addEventListener("click", function () {
                             leftRight = !leftRight;
                         }
 
+                        console.log("length: " + responses.length)
+                        
                         for(var i = 0; i < messageParts.length; i++){
                             const headerStrip = /(\d):(\d)\/(\d):/g;
                             var part = messageParts[i].replace(headerStrip, '');
-
                             message = message + " " + part;
                             console.log(message);
                         }
@@ -177,7 +180,9 @@ captureStart.addEventListener("click", function () {
                         }
 
                         responses.unshift(message);
-                        leftRight = !leftRight;
+                        // if(header[1] == 1){
+                            leftRight = !leftRight;
+                        // }
                         messageParts = [];
                     }
                 }
