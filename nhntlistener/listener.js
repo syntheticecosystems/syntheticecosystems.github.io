@@ -168,6 +168,7 @@ captureStart.addEventListener("click", function () {
                             console.log(responses)
                             console.log("removing entry")
                             responses.shift()
+                            leftRight = !leftRight
                         }
                         
                         for(var i = 0; i < messageParts.length; i++){
